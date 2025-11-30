@@ -15,6 +15,8 @@ import SparePartsPage from './pages/SparePartsPage'
 import SparePartDetailsPage from './pages/SparePartDetailsPage'
 import SparePartFormPage from './pages/SparePartFormPage'
 import TicketsPage from './pages/TicketsPage'
+import TicketDetailsPage from './pages/TicketDetailsPage'
+import TicketFormPage from './pages/TicketFormPage'
 import TemplatesPage from './pages/TemplatesPage'
 import CalendarPage from './pages/CalendarPage'
 import ReportsPage from './pages/ReportsPage'
@@ -51,6 +53,9 @@ function App() {
                 <Route path="/spare-parts/:id" element={<SparePartDetailsPage />} />
                 <Route path="/spare-parts/:id/edit" element={<SparePartFormPage />} />
                 <Route path="/tickets" element={<TicketsPage />} />
+                <Route path="/tickets/new" element={<TicketFormPage />} />
+                <Route path="/tickets/:id" element={<TicketDetailsPage />} />
+                <Route path="/tickets/:id/edit" element={<TicketFormPage />} />
                 <Route path="/templates" element={<TemplatesPage />} />
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/reports" element={<ReportsPage />} />
