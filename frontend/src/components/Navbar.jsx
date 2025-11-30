@@ -27,6 +27,10 @@ import {
     Inventory as SparePartsIcon,
     ConfirmationNumber as TicketsIcon,
     Description as TemplatesIcon,
+    TrendingUp as PredictiveIcon,
+    Gavel as ComplianceIcon,
+    Timeline as SLAIcon,
+    AccountBalance as BankingIcon,
     Logout as LogoutIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -49,6 +53,10 @@ const Navbar = () => {
         { text: 'Calendario', icon: <CalendarIcon />, path: '/calendar' },
         { text: 'Tickets', icon: <TicketsIcon />, path: '/tickets' },
         { text: 'Plantillas', icon: <TemplatesIcon />, path: '/templates' },
+        { text: 'IA Predictiva', icon: <PredictiveIcon />, path: '/predictive-maintenance' },
+        { text: 'Cumplimiento', icon: <ComplianceIcon />, path: '/compliance-dashboard' },
+        { text: 'Métricas SLA', icon: <SLAIcon />, path: '/sla-metrics' },
+        { text: 'Core Banking', icon: <BankingIcon />, path: '/core-banking' },
         { text: 'Reportes', icon: <ReportsIcon />, path: '/reports' },
     ];
 

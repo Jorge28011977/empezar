@@ -22,6 +22,10 @@ import TemplateDetailsPage from './pages/TemplateDetailsPage'
 import TemplateFormPage from './pages/TemplateFormPage'
 import CalendarPage from './pages/CalendarPage'
 import ReportsPage from './pages/ReportsPage'
+import PredictiveMaintenancePage from './pages/PredictiveMaintenancePage'
+import ComplianceDashboardPage from './pages/ComplianceDashboardPage'
+import SLAMetricsPage from './pages/SLAMetricsPage'
+import CoreBankingPage from './pages/CoreBankingPage'
 import LoginPage from './pages/LoginPage'
 import PrivateRoute from './components/PrivateRoute'
 import Navbar from './components/Navbar'
@@ -64,6 +68,10 @@ function App() {
                 <Route path="/templates/:id/edit" element={<TemplateFormPage />} />
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/predictive-maintenance" element={<PredictiveMaintenancePage />} />
+                <Route path="/compliance-dashboard" element={<ComplianceDashboardPage />} />
+                <Route path="/sla-metrics" element={<SLAMetricsPage />} />
+                <Route path="/core-banking" element={<CoreBankingPage />} />
               </Routes>
             </Box>
           </Box>

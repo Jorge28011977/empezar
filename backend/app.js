@@ -52,6 +52,8 @@ const disasterRecoveryRouter = require('./routes/disasterRecovery');
 const auditRouter = require('./routes/audit');
 const tenantRouter = require('./routes/tenant');
 const mfaRouter = require('./routes/mfa');
+const coreBankingRouter = require('./routes/corebanking');
+const predictiveRouter = require('./routes/predictive');
 
 app.use('/api/auth', authRouter);
 app.use('/api/machines', machinesRouter);
@@ -67,6 +69,8 @@ app.use('/api/dr', disasterRecoveryRouter);
 app.use('/api/audit', auditRouter);
 app.use('/api/tenant', tenantRouter);
 app.use('/api/mfa', mfaRouter);
+app.use('/api/corebanking', coreBankingRouter);
+app.use('/api/predictive', predictiveRouter);
 
 // Puerto
 const PORT = process.env.PORT || 3000;

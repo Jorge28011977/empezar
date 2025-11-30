@@ -35,4 +35,16 @@ api.interceptors.response.use(
     }
 )
 
+// Funciones de API para mantenimiento predictivo
+export const predictiveAPI = {
+    // Obtener predicción para una máquina
+    getPrediction: (machineId) => api.get(`/predictive/machines/${machineId}/predict`),
+
+    // Obtener tendencias de fallos
+    getTrends: (machineId, days = 30) => api.get(`/predictive/machines/${machineId}/trends?days=${days}`),
+
+    // Obtener recomendaciones de mantenimiento
+    getRecommendations: (machineId) => api.get(`/predictive/machines/${machineId}/recommendations`)
+}
+
 export default api
