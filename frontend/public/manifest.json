@@ -1,0 +1,70 @@
+{
+    "name": "SGM Bancario - Sistema de Gestión de Mantenimiento",
+    "short_name": "SGM Bancario",
+    "description": "Sistema integral de mantenimiento predictivo con IA para instituciones financieras",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1976d2",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/vite.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/vite.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "business",
+        "productivity",
+        "utilities"
+    ],
+    "lang": "es-ES",
+    "dir": "ltr",
+    "shortcuts": [
+        {
+            "name": "Dashboard",
+            "short_name": "Dashboard",
+            "description": "Ver dashboard principal",
+            "url": "/dashboard",
+            "icons": [
+                {
+                    "src": "/vite.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "IA Predictiva",
+            "short_name": "IA",
+            "description": "Ver mantenimiento predictivo",
+            "url": "/predictive-maintenance",
+            "icons": [
+                {
+                    "src": "/vite.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Cumplimiento",
+            "short_name": "Compliance",
+            "description": "Ver dashboard de cumplimiento",
+            "url": "/compliance-dashboard",
+            "icons": [
+                {
+                    "src": "/vite.svg",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ]
+}

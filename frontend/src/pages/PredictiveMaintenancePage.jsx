@@ -26,6 +26,7 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { predictiveAPI } from '../services/api'
 import { getMachines } from '../services/apiMachines'
+import ARMaintenanceGuide from '../components/ARMaintenanceGuide'
 
 const PredictiveMaintenancePage = () => {
     const [machines, setMachines] = useState([])
@@ -36,6 +37,8 @@ const PredictiveMaintenancePage = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [openDialog, setOpenDialog] = useState(false)
+    const [openARGuide, setOpenARGuide] = useState(false)
+    const [selectedMaintenanceType, setSelectedMaintenanceType] = useState('preventive')
 
     useEffect(() => {
         fetchMachines()
@@ -193,8 +196,19 @@ const PredictiveMaintenancePage = () => {
                                     <Typography variant="h6">
                                         Recomendaciones de Mantenimiento
                                     </Typography>
-                                    <Button variant="outlined" onClick={() => setOpenDialog(true)}>
+                                    <Button variant="outlined" onClick={() => setOpenDialog(true)} sx={{ mr: 1 }}>
                                         Ver Detalles
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => {
+                                            setSelectedMaintenanceType(prediction.riskLevel === 'high' ? 'emergency' :
+                                                prediction.riskLevel === 'medium' ? 'corrective' : 'preventive')
+                                            setOpenARGuide(true)
+                                        }}
+                                    >
+                                        Guía AR
                                     </Button>
                                 </Box>
                                 <List dense>
@@ -307,6 +321,14 @@ const PredictiveMaintenancePage = () => {
                     <Button onClick={() => setOpenDialog(false)}>Cerrar</Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Guía AR de Mantenimiento */}
+            <ARMaintenanceGuide
+                open={openARGuide}
+                onClose={() => setOpenARGuide(false)}
+                machineId={selectedMachine}
+                maintenanceType={selectedMaintenanceType}
+            />
         </Container>
     )
 }

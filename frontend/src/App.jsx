@@ -29,55 +29,61 @@ import CoreBankingPage from './pages/CoreBankingPage'
 import LoginPage from './pages/LoginPage'
 import PrivateRoute from './components/PrivateRoute'
 import Navbar from './components/Navbar'
+import Chatbot from './components/Chatbot'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="/*" element={
-        <PrivateRoute>
-          <Box sx={{ display: 'flex' }}>
-            <Navbar />
-            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: '64px' }}>
-              <Routes>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/machines" element={<MachinesPage />} />
-                <Route path="/machines/new" element={<MachineFormPage />} />
-                <Route path="/machines/:id" element={<MachineDetailsPage />} />
-                <Route path="/machines/:id/edit" element={<MachineFormPage />} />
-                <Route path="/technicians" element={<TechniciansPage />} />
-                <Route path="/technicians/new" element={<TechnicianFormPage />} />
-                <Route path="/technicians/:id" element={<TechnicianDetailsPage />} />
-                <Route path="/technicians/:id/edit" element={<TechnicianFormPage />} />
-                <Route path="/maintenances" element={<MaintenancesPage />} />
-                <Route path="/maintenances/new" element={<MaintenanceFormPage />} />
-                <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
-                <Route path="/maintenances/:id/edit" element={<MaintenanceFormPage />} />
-                <Route path="/spare-parts" element={<SparePartsPage />} />
-                <Route path="/spare-parts/new" element={<SparePartFormPage />} />
-                <Route path="/spare-parts/:id" element={<SparePartDetailsPage />} />
-                <Route path="/spare-parts/:id/edit" element={<SparePartFormPage />} />
-                <Route path="/tickets" element={<TicketsPage />} />
-                <Route path="/tickets/new" element={<TicketFormPage />} />
-                <Route path="/tickets/:id" element={<TicketDetailsPage />} />
-                <Route path="/tickets/:id/edit" element={<TicketFormPage />} />
-                <Route path="/templates" element={<TemplatesPage />} />
-                <Route path="/templates/new" element={<TemplateFormPage />} />
-                <Route path="/templates/:id" element={<TemplateDetailsPage />} />
-                <Route path="/templates/:id/edit" element={<TemplateFormPage />} />
-                <Route path="/calendar" element={<CalendarPage />} />
-                <Route path="/reports" element={<ReportsPage />} />
-                <Route path="/predictive-maintenance" element={<PredictiveMaintenancePage />} />
-                <Route path="/compliance-dashboard" element={<ComplianceDashboardPage />} />
-                <Route path="/sla-metrics" element={<SLAMetricsPage />} />
-                <Route path="/core-banking" element={<CoreBankingPage />} />
-              </Routes>
+    <>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/*" element={
+          <PrivateRoute>
+            <Box sx={{ display: 'flex' }}>
+              <Navbar />
+              <Box component="main" sx={{ flexGrow: 1, p: 3, mt: '64px' }}>
+                <Routes>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/machines" element={<MachinesPage />} />
+                  <Route path="/machines/new" element={<MachineFormPage />} />
+                  <Route path="/machines/:id" element={<MachineDetailsPage />} />
+                  <Route path="/machines/:id/edit" element={<MachineFormPage />} />
+                  <Route path="/technicians" element={<TechniciansPage />} />
+                  <Route path="/technicians/new" element={<TechnicianFormPage />} />
+                  <Route path="/technicians/:id" element={<TechnicianDetailsPage />} />
+                  <Route path="/technicians/:id/edit" element={<TechnicianFormPage />} />
+                  <Route path="/maintenances" element={<MaintenancesPage />} />
+                  <Route path="/maintenances/new" element={<MaintenanceFormPage />} />
+                  <Route path="/maintenances/:id" element={<MaintenanceDetailsPage />} />
+                  <Route path="/maintenances/:id/edit" element={<MaintenanceFormPage />} />
+                  <Route path="/spare-parts" element={<SparePartsPage />} />
+                  <Route path="/spare-parts/new" element={<SparePartFormPage />} />
+                  <Route path="/spare-parts/:id" element={<SparePartDetailsPage />} />
+                  <Route path="/spare-parts/:id/edit" element={<SparePartFormPage />} />
+                  <Route path="/tickets" element={<TicketsPage />} />
+                  <Route path="/tickets/new" element={<TicketFormPage />} />
+                  <Route path="/tickets/:id" element={<TicketDetailsPage />} />
+                  <Route path="/tickets/:id/edit" element={<TicketFormPage />} />
+                  <Route path="/templates" element={<TemplatesPage />} />
+                  <Route path="/templates/new" element={<TemplateFormPage />} />
+                  <Route path="/templates/:id" element={<TemplateDetailsPage />} />
+                  <Route path="/templates/:id/edit" element={<TemplateFormPage />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/reports" element={<ReportsPage />} />
+                  <Route path="/predictive-maintenance" element={<PredictiveMaintenancePage />} />
+                  <Route path="/compliance-dashboard" element={<ComplianceDashboardPage />} />
+                  <Route path="/sla-metrics" element={<SLAMetricsPage />} />
+                  <Route path="/core-banking" element={<CoreBankingPage />} />
+                </Routes>
+              </Box>
             </Box>
-          </Box>
-        </PrivateRoute>
-      } />
-    </Routes>
+          </PrivateRoute>
+        } />
+      </Routes>
+
+      {/* Chatbot disponible en todas las páginas */}
+      <Chatbot />
+    </>
   )
 }
 

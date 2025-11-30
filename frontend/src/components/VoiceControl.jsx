@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import {
     Fab,
     Dialog,
@@ -10,125 +10,55 @@ import {
     Box,
     Chip,
     Alert,
-    CircularProgress
+    CircularProgress,
+    List,
+    ListItem,
+    ListItemText,
+    Divider
 } from '@mui/material';
-import { Mic, MicOff } from '@mui/icons-material';
+import { Mic, MicOff, Help } from '@mui/icons-material';
+import useVoiceControl from '../hooks/useVoiceControl';
 
 const VoiceControl = ({ onCommand, disabled = false }) => {
-    const [isListening, setIsListening] = useState(false);
-    const [transcript, setTranscript] = useState('');
-    const [isSupported, setIsSupported] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
+    const [showHelp, setShowHelp] = useState(false);
     const [lastCommand, setLastCommand] = useState('');
-    const [error, setError] = useState('');
+    const [commandStatus, setCommandStatus] = useState(null);
 
-    const recognitionRef = useRef(null);
-
-    useEffect(() => {
-        // Verificar soporte de Web Speech API
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-        if (SpeechRecognition) {
-            setIsSupported(true);
-            recognitionRef.current = new SpeechRecognition();
-            recognitionRef.current.continuous = false;
-            recognitionRef.current.interimResults = false;
-            recognitionRef.current.lang = 'es-ES'; // Español
-
-            recognitionRef.current.onstart = () => {
-                setIsListening(true);
-                setError('');
-            };
-
-            recognitionRef.current.onresult = (event) => {
-                const result = event.results[0][0].transcript.toLowerCase();
-                setTranscript(result);
-                processCommand(result);
-            };
-
-            recognitionRef.current.onerror = (event) => {
-                setError(`Error de reconocimiento: ${event.error}`);
-                setIsListening(false);
-            };
-
-            recognitionRef.current.onend = () => {
-                setIsListening(false);
-            };
-        } else {
-            setIsSupported(false);
-            setError('Web Speech API no soportada en este navegador');
+    const {
+        isListening,
+        transcript,
+        isSupported,
+        startListening,
+        stopListening,
+        getAvailableCommands
+    } = useVoiceControl((result) => {
+        if (result.type === 'COMMAND_EXECUTED') {
+            setLastCommand(result.command);
+            setCommandStatus({ success: true, message: `Comando ejecutado: ${result.command}` });
+            setShowDialog(true);
+            onCommand?.(result);
+        } else if (result.type === 'COMMAND_NOT_RECOGNIZED') {
+            setLastCommand(result.command);
+            setCommandStatus({ success: false, message: `Comando no reconocido: ${result.command}` });
+            setShowDialog(true);
+        } else if (result.type === 'OPEN_CHATBOT') {
+            onCommand?.({ type: 'OPEN_CHATBOT' });
+        } else if (result.type === 'SHOW_HELP') {
+            setShowHelp(true);
+        } else if (result.type === 'SHOW_COMMANDS') {
+            setShowHelp(true);
         }
-
-        return () => {
-            if (recognitionRef.current) {
-                recognitionRef.current.stop();
-            }
-        };
-    }, []);
-
-    const processCommand = (command) => {
-        setLastCommand(command);
-        setShowDialog(true);
-
-        // Procesar comandos de voz
-        let action = null;
-
-        if (command.includes('mostrar') && command.includes('mantenimiento')) {
-            if (command.includes('hoy')) {
-                action = { type: 'SHOW_MAINTENANCES_TODAY' };
-            } else if (command.includes('semana')) {
-                action = { type: 'SHOW_MAINTENANCES_WEEK' };
-            } else if (command.includes('mes')) {
-                action = { type: 'SHOW_MAINTENANCES_MONTH' };
-            } else {
-                action = { type: 'SHOW_MAINTENANCES' };
-            }
-        } else if (command.includes('dashboard') || command.includes('inicio')) {
-            action = { type: 'SHOW_DASHBOARD' };
-        } else if (command.includes('máquina') || command.includes('maquina')) {
-            if (command.includes('lista')) {
-                action = { type: 'SHOW_MACHINES' };
-            } else {
-                action = { type: 'SHOW_MACHINE_DETAILS' };
-            }
-        } else if (command.includes('técnico') || command.includes('tecnico')) {
-            action = { type: 'SHOW_TECHNICIANS' };
-        } else if (command.includes('calendario')) {
-            action = { type: 'SHOW_CALENDAR' };
-        } else if (command.includes('reporte') || command.includes('informe')) {
-            action = { type: 'SHOW_REPORTS' };
-        } else if (command.includes('ayuda')) {
-            action = { type: 'SHOW_HELP' };
-        } else {
-            action = { type: 'UNKNOWN_COMMAND', command };
-        }
-
-        // Ejecutar acción después de un breve delay para mostrar el diálogo
-        setTimeout(() => {
-            if (onCommand) {
-                onCommand(action);
-            }
-        }, 1500);
-    };
-
-    const startListening = () => {
-        if (recognitionRef.current && !isListening) {
-            setTranscript('');
-            setError('');
-            recognitionRef.current.start();
-        }
-    };
-
-    const stopListening = () => {
-        if (recognitionRef.current && isListening) {
-            recognitionRef.current.stop();
-        }
-    };
+    });
 
     const handleCloseDialog = () => {
         setShowDialog(false);
-        setTranscript('');
         setLastCommand('');
+        setCommandStatus(null);
+    };
+
+    const handleShowHelp = () => {
+        setShowHelp(true);
     };
 
     if (!isSupported) {
@@ -141,21 +71,30 @@ const VoiceControl = ({ onCommand, disabled = false }) => {
 
     return (
         <>
-            {/* Botón flotante para activar voz */}
-            <Fab
-                color={isListening ? "error" : "primary"}
-                aria-label="control por voz"
-                onClick={isListening ? stopListening : startListening}
-                disabled={disabled}
-                sx={{
-                    position: 'fixed',
-                    bottom: 16,
-                    right: 16,
-                    zIndex: 1000
-                }}
-            >
-                {isListening ? <MicOff /> : <Mic />}
-            </Fab>
+            {/* Botones flotantes para control de voz */}
+            <Box sx={{ position: 'fixed', bottom: 16, right: 16, zIndex: 1000, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {/* Botón principal de voz */}
+                <Fab
+                    color={isListening ? "error" : "primary"}
+                    aria-label="control por voz"
+                    onClick={isListening ? stopListening : startListening}
+                    disabled={disabled || !isSupported}
+                    size="medium"
+                >
+                    {isListening ? <MicOff /> : <Mic />}
+                </Fab>
+
+                {/* Botón de ayuda */}
+                <Fab
+                    color="secondary"
+                    aria-label="ayuda comandos voz"
+                    onClick={handleShowHelp}
+                    disabled={disabled}
+                    size="small"
+                >
+                    <Help />
+                </Fab>
+            </Box>
 
             {/* Diálogo de confirmación de comando */}
             <Dialog
@@ -165,31 +104,19 @@ const VoiceControl = ({ onCommand, disabled = false }) => {
                 fullWidth
             >
                 <DialogTitle>
-                    Comando de Voz Reconocido
+                    Comando de Voz {commandStatus?.success ? 'Ejecutado' : 'No Reconocido'}
                 </DialogTitle>
                 <DialogContent>
                     <Box sx={{ mb: 2 }}>
                         <Typography variant="body1" gutterBottom>
                             Escuché: <strong>"{lastCommand}"</strong>
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Procesando comando...
-                        </Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                            <CircularProgress size={24} />
-                        </Box>
-                    </Box>
-                    <Box sx={{ mt: 2 }}>
-                        <Typography variant="body2" gutterBottom>
-                            Comandos disponibles:
-                        </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                            <Chip label="mostrar mantenimientos de hoy" size="small" />
-                            <Chip label="mostrar dashboard" size="small" />
-                            <Chip label="mostrar máquinas" size="small" />
-                            <Chip label="mostrar calendario" size="small" />
-                            <Chip label="mostrar reportes" size="small" />
-                        </Box>
+                        <Alert
+                            severity={commandStatus?.success ? "success" : "warning"}
+                            sx={{ mt: 1 }}
+                        >
+                            {commandStatus?.message}
+                        </Alert>
                     </Box>
                 </DialogContent>
                 <DialogActions>
@@ -199,21 +126,86 @@ const VoiceControl = ({ onCommand, disabled = false }) => {
                 </DialogActions>
             </Dialog>
 
-            {/* Indicador de error */}
-            {error && (
-                <Alert
-                    severity="error"
-                    sx={{
-                        position: 'fixed',
-                        bottom: 80,
-                        right: 16,
-                        zIndex: 1000,
-                        maxWidth: 300
-                    }}
-                >
-                    {error}
-                </Alert>
-            )}
+            {/* Diálogo de ayuda con comandos */}
+            <Dialog
+                open={showHelp}
+                onClose={() => setShowHelp(false)}
+                maxWidth="md"
+                fullWidth
+            >
+                <DialogTitle>
+                    Comandos de Voz Disponibles
+                </DialogTitle>
+                <DialogContent>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                        Di cualquiera de estos comandos cuando el micrófono esté activo:
+                    </Typography>
+
+                    <List dense>
+                        <ListItem>
+                            <ListItemText
+                                primary="Navegación"
+                                secondary={
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                                        <Chip label="ir al dashboard" size="small" />
+                                        <Chip label="ir a máquinas" size="small" />
+                                        <Chip label="ir a técnicos" size="small" />
+                                        <Chip label="ir a mantenimientos" size="small" />
+                                        <Chip label="ir a calendario" size="small" />
+                                        <Chip label="ir a reportes" size="small" />
+                                        <Chip label="ir a ia predictiva" size="small" />
+                                        <Chip label="ir a cumplimiento" size="small" />
+                                        <Chip label="ir a métricas sla" size="small" />
+                                        <Chip label="ir a core banking" size="small" />
+                                    </Box>
+                                }
+                            />
+                        </ListItem>
+                        <Divider />
+
+                        <ListItem>
+                            <ListItemText
+                                primary="Acciones"
+                                secondary={
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                                        <Chip label="nuevo mantenimiento" size="small" />
+                                        <Chip label="nueva máquina" size="small" />
+                                        <Chip label="nuevo técnico" size="small" />
+                                        <Chip label="actualizar datos" size="small" />
+                                        <Chip label="abrir chatbot" size="small" />
+                                    </Box>
+                                }
+                            />
+                        </ListItem>
+                        <Divider />
+
+                        <ListItem>
+                            <ListItemText
+                                primary="Control"
+                                secondary={
+                                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                                        <Chip label="detener escucha" size="small" />
+                                        <Chip label="ayuda" size="small" />
+                                        <Chip label="comandos disponibles" size="small" />
+                                    </Box>
+                                }
+                            />
+                        </ListItem>
+                    </List>
+
+                    <Alert severity="info" sx={{ mt: 2 }}>
+                        <Typography variant="body2">
+                            <strong>Consejos:</strong> Habla claro y natural. Los comandos funcionan en español.
+                            Puedes usar variaciones como "mostrar" en lugar de "ir a".
+                        </Typography>
+                    </Alert>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setShowHelp(false)}>
+                        Cerrar
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             {/* Indicador de listening */}
             {isListening && (
@@ -221,13 +213,29 @@ const VoiceControl = ({ onCommand, disabled = false }) => {
                     severity="info"
                     sx={{
                         position: 'fixed',
-                        bottom: 80,
+                        bottom: 140,
                         right: 16,
                         zIndex: 1000,
                         maxWidth: 300
                     }}
                 >
-                    Escuchando... Di un comando
+                    🎤 Escuchando... Di un comando de voz
+                </Alert>
+            )}
+
+            {/* Indicador de no soportado */}
+            {!isSupported && (
+                <Alert
+                    severity="warning"
+                    sx={{
+                        position: 'fixed',
+                        bottom: 140,
+                        right: 16,
+                        zIndex: 1000,
+                        maxWidth: 300
+                    }}
+                >
+                    Control por voz no disponible en este navegador
                 </Alert>
             )}
         </>
