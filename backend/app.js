@@ -20,18 +20,22 @@ sequelize.sync({ force: false }).then(async () => {
     const { User } = require('./models');
     const bcrypt = require('bcryptjs');
 
-    const adminExists = await User.findOne({ where: { email: 'admin@mantto.com' } });
-    if (!adminExists) {
-        const hashedPassword = await bcrypt.hash('admin123', 10);
-        await User.create({
-            username: 'admin',
-            email: 'admin@mantto.com',
-            password: hashedPassword,
-            role: 'admin'
-        });
-        console.log('Admin user created');
-    } else {
-        console.log('Admin user already exists');
+    try {
+        const adminExists = await User.findOne({ where: { email: 'admin@mantto.com' } });
+        if (!adminExists) {
+            const hashedPassword = await bcrypt.hash('admin123', 10);
+            await User.create({
+                username: 'admin',
+                email: 'admin@mantto.com',
+                password: hashedPassword,
+                role: 'admin'
+            });
+            console.log('Admin user created');
+        } else {
+            console.log('Admin user already exists');
+        }
+    } catch (error) {
+        console.error('Error creating admin user:', error);
     }
 }).catch(err => {
     console.error('Database sync error:', err);
@@ -73,7 +77,7 @@ app.use('/api/corebanking', coreBankingRouter);
 app.use('/api/predictive', predictiveRouter);
 
 // Puerto
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);

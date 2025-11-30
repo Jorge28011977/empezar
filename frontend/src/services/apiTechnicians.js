@@ -1,11 +1,20 @@
+// API Technicians - Updated exports
 import api from './api.js'
 
-const apiTechnicians = {
-    getAll: (params = {}) => api.get('/technicians', { params }),
-    getById: (id) => api.get(`/technicians/${id}`),
-    create: (data) => api.post('/technicians', data),
-    update: (id, data) => api.put(`/technicians/${id}`, data),
-    delete: (id) => api.delete(`/technicians/${id}`)
-};
+// Named exports para compatibilidad con imports
+export const getAllTechnicians = (params = {}) => api.get('/technicians', { params })
+export const getTechnicianById = (id) => api.get(`/technicians/${id}`)
+export const createTechnician = (data) => api.post('/technicians', data)
+export const updateTechnician = (id, data) => api.put(`/technicians/${id}`, data)
+export const deleteTechnician = (id) => api.delete(`/technicians/${id}`)
 
-export default apiTechnicians;
+// También exportar como objeto por compatibilidad
+const apiTechnicians = {
+    getAll: getAllTechnicians,
+    getById: getTechnicianById,
+    create: createTechnician,
+    update: updateTechnician,
+    delete: deleteTechnician
+}
+
+export default apiTechnicians

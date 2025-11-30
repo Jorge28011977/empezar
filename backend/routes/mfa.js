@@ -1,13 +1,13 @@
 const express = require('express');
 const { body } = require('express-validator');
 const mfaController = require('../controllers/mfaController');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 const { verifyMFAToken, mfaRateLimit } = require('../middleware/mfa');
 
 const router = express.Router();
 
 // Todas las rutas requieren autenticación básica
-router.use(auth);
+router.use(authenticateToken);
 
 // Generar secreto MFA
 router.post('/setup', mfaController.generateMFASecret);

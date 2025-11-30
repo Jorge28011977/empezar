@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const tenantController = require('../controllers/tenantController');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 const { multiTenant } = require('../middleware/multiTenant');
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(multiTenant);
 
 // Todas las rutas requieren autenticación
-router.use(auth);
+router.use(authenticateToken);
 
 // Obtener información del tenant actual
 router.get('/current', tenantController.getCurrentTenant);

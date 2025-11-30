@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const predictiveController = require('../controllers/predictiveController');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 // Todas las rutas requieren autenticación
-router.use(auth);
+router.use(authenticateToken);
 
 // GET /api/predictive/machines/:machineId/predict
 // Predecir mantenimiento preventivo para una máquina

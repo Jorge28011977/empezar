@@ -1,12 +1,12 @@
 const express = require('express');
 const { body } = require('express-validator');
 const disasterRecoveryController = require('../controllers/disasterRecoveryController');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Todas las rutas requieren autenticación
-router.use(auth);
+router.use(authenticateToken);
 
 // Obtener métricas de SLA
 router.get('/metrics', disasterRecoveryController.getSLAMetrics);

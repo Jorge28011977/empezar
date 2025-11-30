@@ -1,12 +1,12 @@
 const express = require('express');
 const { body, query } = require('express-validator');
 const auditController = require('../controllers/auditController');
-const auth = require('../middleware/auth');
+const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
 // Todas las rutas requieren autenticación
-router.use(auth);
+router.use(authenticateToken);
 
 // Registrar evento de auditoría
 router.post('/events', [
