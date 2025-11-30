@@ -30,6 +30,30 @@ router.get('/trail', [
     query('limit').optional().isInt({ min: 1, max: 100 })
 ], auditController.getAuditTrail);
 
+// Alias para /logs (compatibilidad con frontend)
+router.get('/logs', [
+    query('entityType').optional().isString(),
+    query('entityId').optional().isString(),
+    query('userId').optional().isInt(),
+    query('action').optional().isIn(['CREATE', 'UPDATE', 'DELETE', 'LOGIN', 'LOGOUT']),
+    query('startDate').optional().isISO8601(),
+    query('endDate').optional().isISO8601(),
+    query('page').optional().isInt({ min: 1 }),
+    query('limit').optional().isInt({ min: 1, max: 100 })
+], auditController.getAuditTrail);
+
+// Alias para /audits (compatibilidad con frontend)
+router.get('/', [
+    query('entityType').optional().isString(),
+    query('entityId').optional().isString(),
+    query('userId').optional().isInt(),
+    query('action').optional().isIn(['CREATE', 'UPDATE', 'DELETE', 'LOGIN', 'LOGOUT']),
+    query('startDate').optional().isISO8601(),
+    query('endDate').optional().isISO8601(),
+    query('page').optional().isInt({ min: 1 }),
+    query('limit').optional().isInt({ min: 1, max: 100 })
+], auditController.getAuditTrail);
+
 // Verificar integridad de evento
 router.get('/events/:eventId/verify', auditController.verifyEvent);
 

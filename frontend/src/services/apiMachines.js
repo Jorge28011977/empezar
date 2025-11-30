@@ -1,11 +1,22 @@
 import api from './api.js'
 
-const apiMachines = {
-    getAll: (params = {}) => api.get('/machines', { params }),
-    getById: (id) => api.get(`/machines/${id}`),
-    create: (data) => api.post('/machines', data),
-    update: (id, data) => api.put(`/machines/${id}`, data),
-    delete: (id) => api.delete(`/machines/${id}`)
-};
+// Named exports
+export const getAllMachines = (params = {}) => api.get('/machines', { params })
+export const getMachineById = (id) => api.get(`/machines/${id}`)
+export const createMachine = (data) => api.post('/machines', data)
+export const updateMachine = (id, data) => api.put(`/machines/${id}`, data)
+export const deleteMachine = (id) => api.delete(`/machines/${id}`)
 
-export default apiMachines;
+// Alias for compatibility
+export const getMachines = getAllMachines
+
+// Default export
+const apiMachines = {
+    getAll: getAllMachines,
+    getById: getMachineById,
+    create: createMachine,
+    update: updateMachine,
+    delete: deleteMachine
+}
+
+export default apiMachines

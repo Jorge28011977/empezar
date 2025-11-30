@@ -40,64 +40,51 @@ const mockStats = {
 // Funciones para obtener estadísticas
 export const getMachineStats = async () => {
     try {
-        // Intentar llamada real
-        // const response = await api.get('/stats/machines')
-        // return response.data
-
-        // Simulación
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(mockStats.machines), 500)
-        })
+        const response = await api.get('/stats/machines')
+        return response.data
     } catch (error) {
         console.error('Error fetching machine stats:', error)
-        throw error
+        // Fallback a datos mock si falla la API
+        return mockStats.machines
     }
 }
 
 export const getMaintenanceStats = async () => {
     try {
-        // const response = await api.get('/stats/maintenances')
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(mockStats.maintenances), 500)
-        })
+        const response = await api.get('/stats/maintenances')
+        return response.data
     } catch (error) {
         console.error('Error fetching maintenance stats:', error)
-        throw error
+        return mockStats.maintenances
     }
 }
 
 export const getCostStats = async () => {
     try {
-        // const response = await api.get('/stats/costs')
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(mockStats.costs), 500)
-        })
+        const response = await api.get('/stats/costs')
+        return response.data
     } catch (error) {
         console.error('Error fetching cost stats:', error)
-        throw error
+        return mockStats.costs
     }
 }
 
 export const getTechnicianStats = async () => {
     try {
-        // const response = await api.get('/stats/technicians')
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(mockStats.technicians), 500)
-        })
+        const response = await api.get('/stats/technicians')
+        return response.data
     } catch (error) {
         console.error('Error fetching technician stats:', error)
-        throw error
+        return mockStats.technicians
     }
 }
 
 export const getAlerts = async () => {
     try {
-        // const response = await api.get('/alerts')
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(mockStats.alerts), 500)
-        })
+        const response = await api.get('/stats/alerts')
+        return response.data
     } catch (error) {
         console.error('Error fetching alerts:', error)
-        throw error
+        return mockStats.alerts
     }
 }

@@ -38,3 +38,7 @@ const apiMaintenances = {
 };
 
 export default apiMaintenances;
+
+// Named exports for compatibility
+export const getAllMaintenances = apiMaintenances.getAll;
+export const updateMaintenance = apiMaintenances.update;

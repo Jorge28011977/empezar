@@ -59,6 +59,9 @@ const mfaRouter = require('./routes/mfa');
 const coreBankingRouter = require('./routes/corebanking');
 const predictiveRouter = require('./routes/predictive');
 
+// Crear router para stats
+const statsRouter = require('./routes/stats');
+
 app.use('/api/auth', authRouter);
 app.use('/api/machines', machinesRouter);
 app.use('/api/technicians', techniciansRouter);
@@ -71,10 +74,12 @@ app.use('/api/iot', iotRouter);
 app.use('/api/erp', erpRouter);
 app.use('/api/dr', disasterRecoveryRouter);
 app.use('/api/audit', auditRouter);
+app.use('/api/audits', auditRouter);
 app.use('/api/tenant', tenantRouter);
 app.use('/api/mfa', mfaRouter);
 app.use('/api/corebanking', coreBankingRouter);
 app.use('/api/predictive', predictiveRouter);
+app.use('/api/stats', statsRouter);
 
 // Puerto
 const PORT = process.env.PORT || 5000;

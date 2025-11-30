@@ -1,6 +1,31 @@
 const { Machine, Maintenance, Ticket } = require('../models');
 const { validationResult } = require('express-validator');
 
+// Obtener tipos de máquinas disponibles
+const getMachineTypes = async (req, res) => {
+    try {
+        // Tipos de máquinas disponibles (pueden venir de una tabla o ser hardcodeados)
+        const machineTypes = [
+            { id: 1, name: 'ATM', description: 'Cajero Automático' },
+            { id: 2, name: 'Kiosk', description: 'Kiosco de Servicios' },
+            { id: 3, name: 'Printer', description: 'Impresora' },
+            { id: 4, name: 'Scanner', description: 'Escáner' },
+            { id: 5, name: 'Terminal', description: 'Terminal de Pago' }
+        ];
+
+        res.json({
+            success: true,
+            data: machineTypes
+        });
+    } catch (error) {
+        console.error('Error obteniendo tipos de máquina:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error interno del servidor'
+        });
+    }
+};
+
 // Obtener todas las máquinas con filtros opcionales
 const getAllMachines = async (req, res) => {
     try {
@@ -206,6 +231,7 @@ const deleteMachine = async (req, res) => {
 };
 
 module.exports = {
+    getMachineTypes,
     getAllMachines,
     getMachineById,
     createMachine,

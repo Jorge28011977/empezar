@@ -85,6 +85,14 @@ router.get(
     machineController.getAllMachines
 );
 
+// Obtener tipos de máquinas disponibles
+router.get(
+    '/types/all',
+    authenticateToken,
+    authorizeRoles('admin', 'tecnico'),
+    machineController.getMachineTypes
+);
+
 router.get(
     '/:id',
     authenticateToken,
