@@ -48,6 +48,10 @@ const inventoryRouter = require('./routes/inventory');
 const ticketsRouter = require('./routes/tickets');
 const iotRouter = require('./routes/iot');
 const erpRouter = require('./routes/erp');
+const disasterRecoveryRouter = require('./routes/disasterRecovery');
+const auditRouter = require('./routes/audit');
+const tenantRouter = require('./routes/tenant');
+
 app.use('/api/auth', authRouter);
 app.use('/api/machines', machinesRouter);
 app.use('/api/technicians', techniciansRouter);
@@ -58,6 +62,9 @@ app.use('/api/inventory', inventoryRouter);
 app.use('/api/tickets', ticketsRouter);
 app.use('/api/iot', iotRouter);
 app.use('/api/erp', erpRouter);
+app.use('/api/dr', disasterRecoveryRouter);
+app.use('/api/audit', auditRouter);
+app.use('/api/tenant', tenantRouter);
 
 // Puerto
 const PORT = process.env.PORT || 3000;
