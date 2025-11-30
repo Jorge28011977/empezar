@@ -1,12 +1,13 @@
 import api from './api.js'
-import { getAllMachines } from './apiMachines.js'
-import { getAllMaintenances } from './apiMaintenances.js'
+import apiMachines from './apiMachines.js'
+import apiMaintenances from './apiMaintenances.js'
 import { getCostStats } from './apiStats.js'
 
 // Función para obtener datos de máquinas para reportes
 export const getMachinesReportData = async (params = {}) => {
     try {
-        return await getAllMachines(params)
+        const response = await apiMachines.getAll(params)
+        return response.data
     } catch (error) {
         throw error
     }
@@ -15,7 +16,8 @@ export const getMachinesReportData = async (params = {}) => {
 // Función para obtener datos de mantenimientos para reportes
 export const getMaintenanceReportData = async (params = {}) => {
     try {
-        return await getAllMaintenances(params)
+        const response = await apiMaintenances.getAll(params)
+        return response.data
     } catch (error) {
         throw error
     }
