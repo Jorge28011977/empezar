@@ -18,6 +18,8 @@ import TicketsPage from './pages/TicketsPage'
 import TicketDetailsPage from './pages/TicketDetailsPage'
 import TicketFormPage from './pages/TicketFormPage'
 import TemplatesPage from './pages/TemplatesPage'
+import TemplateDetailsPage from './pages/TemplateDetailsPage'
+import TemplateFormPage from './pages/TemplateFormPage'
 import CalendarPage from './pages/CalendarPage'
 import ReportsPage from './pages/ReportsPage'
 import LoginPage from './pages/LoginPage'
@@ -57,6 +59,9 @@ function App() {
                 <Route path="/tickets/:id" element={<TicketDetailsPage />} />
                 <Route path="/tickets/:id/edit" element={<TicketFormPage />} />
                 <Route path="/templates" element={<TemplatesPage />} />
+                <Route path="/templates/new" element={<TemplateFormPage />} />
+                <Route path="/templates/:id" element={<TemplateDetailsPage />} />
+                <Route path="/templates/:id/edit" element={<TemplateFormPage />} />
                 <Route path="/calendar" element={<CalendarPage />} />
                 <Route path="/reports" element={<ReportsPage />} />
               </Routes>
